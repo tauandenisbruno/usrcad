@@ -1,3 +1,3 @@
-# usercad
-# /home/denis/.cache/gnome-builder/projects/UserCad/
-A description of this project.
+# UsrCad
+### Experimental project for studies
+Feel free to use anything!
