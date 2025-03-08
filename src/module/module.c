@@ -50,7 +50,8 @@ void create_usr(char *nome, short idade, char *esc)
         {
             arquivo = fopen(usr, "w");
             fprintf(arquivo, "%s\n%hd\n%s\n", nome, idade, esc);
-            i = 6;
+            fclose(arquivo);
+            break;
         }
 
         else
@@ -58,8 +59,6 @@ void create_usr(char *nome, short idade, char *esc)
             i++;
             snprintf(usr, sizeof (usr), "usr/usr%02hd", i);
         }
-
-        fclose (arquivo);
     }
 }
 

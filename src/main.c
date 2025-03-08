@@ -48,6 +48,10 @@ int main()
                     clr_scr();
                     printf("< NÚMERO MÁXIMO DE USUÁRIOS CADASTRADOS! >\n-------------------------\n\n4 - VOLTAR > ");
                     scanf("%hd", &linha);
+
+                    if (linha <= 0 || linha > 6) // protection for invalid options
+                        linha = 3;
+
                     linha = 1;
                 }
                 else
@@ -73,13 +77,16 @@ int main()
             {
                 while(linha != 6)
                 {
-                    if (show_usr())
+                    if (show_usr() > 0)
                     {
                         clr_scr();
                         printf("SELECIONE O USUÁRIO:\n\n");
                         usrname();
                         printf("\n-------------------------\n6 - VOLTAR\n\nOPÇÃO> ");
                         scanf("%hd", &linha);
+
+                        if (linha <= 0 || linha > 6) // protection for invalid options
+                            linha = 7;
                     }
 
                     if ((linha > 0) && (linha < 6))
@@ -102,7 +109,6 @@ int main()
 
                             else
                                 fclose(arquivo);
-                            linha = 0;
                         }
 
                         else
@@ -112,21 +118,26 @@ int main()
                                 clr_scr();
                                 printf("< NÃO HÁ USUÁRIOS CADASTRADOS! >\n-------------------------\n\n4 - VOLTAR > ");
                                 scanf("%hd", &linha);
-                                linha = 0;
+
+                                if (linha <= 0 || linha > 6) // protection for invalid options
+                                    linha = 3;
+                                break;
                             }
                             else
                             {
                                 clr_scr();
                                 printf("< USUÁRIO SELECIONADO INVÁLIDO! >\n-------------------------\n\n4 - VOLTAR > ");
                                 scanf("%hd", &linha);
-                                linha = 0;
+
+                                if (linha <= 0 || linha > 6) // protection for invalid options
+                                    linha = 3;
                             }
                         }
                     }
                 }
-                linha = 0;
+                linha = 1;
             }
-            clr_scr(); // clear screen
+            clr_scr();
         }
     }
     return 0;
