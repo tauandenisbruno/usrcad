@@ -2,10 +2,10 @@
 #include <stdlib.h> // for 'malloc()' and 'free()'
 #include <string.h> // for 'fgets()' and 'strcpy()'
 
-int chk_os()
+short chk_os()
 {
     // OS DETECT | 1 = WINDOWS | 2 = LINUX | 3 = MACOS | 4 = OTHER
-    int sys_os = 2;
+    short sys_os = 2;
     #ifdef _WIN32
     { sys_os = 1; }
     #elifdef __linux__
@@ -18,7 +18,7 @@ int chk_os()
     return sys_os;
 }
 
-char* rtn_os()
+char* ret_os()
 {
     switch (chk_os())
     {
@@ -37,52 +37,10 @@ char* rtn_os()
     }
 }
 
-char* return_line(int linha)
-{
-    char *dados = malloc(1024);
-    FILE *arquivo = fopen("usr/usr00", "r");
-
-    int linha_atual = 0;
-    while (fgets(dados, sizeof(dados), arquivo) != NULL)
-    {
-        linha_atual++;
-        if (linha_atual == linha)
-        {
-            break;
-        }
-    }
-    return dados;
-    fclose(arquivo);
-    free(dados);
-}
-
-void edit_line(int linha, char *texto)
-{
-    char* txt_tmp[100][1024]; // Texto temporário
-
-    int i = 0; // Contador
-    FILE *arquivo = fopen("usr/usr00", "r"); // Abre arquivo no modo de LEITURA
-    while (fgets(txt_tmp[i], 1024, arquivo) != NULL)
-    {
-        i++;
-    }
-    fclose(arquivo);
-
-    strcpy(txt_tmp[linha -1], texto);
-    arquivo = fopen("usr/usr00", "w");
-
-    for (i = 0; i < 100; i++)
-    {
-        fprintf(arquivo, "%s", txt_tmp[i]);
-    }
-
-    fclose(arquivo);
-}
-
-void create_usr(char *nome, int idade, char *esc)
+void create_usr(char *nome, short idade, char *esc)
 {
     char usr[30] = "usr/usr00";
-    int i = 0;
+    short i = 0;
 
     while (i <= 5)
     {
@@ -91,49 +49,72 @@ void create_usr(char *nome, int idade, char *esc)
         if (arquivo == NULL)
         {
             arquivo = fopen(usr, "w");
-            fprintf(arquivo, "%s\n%d\n%s\n", nome, idade, esc);
+            fprintf(arquivo, "%s\n%hd\n%s\n", nome, idade, esc);
             i = 6;
         }
 
         else
         {
             i++;
-            snprintf(usr, sizeof (usr), "usr/usr%02d", i);
+            snprintf(usr, sizeof (usr), "usr/usr%02hd", i);
         }
 
         fclose (arquivo);
     }
 }
 
-void show_usr()
+void usrname()
+{
+    char file_usr[30] = "usr/usr00", name[30];
+
+    for (short i = 1; i < 6; i ++)
+        {
+            FILE *arquivo = fopen(file_usr, "r");
+            if (arquivo == NULL)
+            {
+                snprintf(file_usr, sizeof(file_usr), "usr/usr%02hd", i);
+            }
+            else
+            {
+                fscanf(arquivo, "%20[^\n]", name);
+                printf("USUÁRIO %d: %s\n", i, name);
+                fclose(arquivo);
+                snprintf(file_usr, sizeof(file_usr), "usr/usr%02hd", i);
+            }
+        }
+}
+
+
+short show_usr()
 {
     char linha[30], usr_file[30] = "usr/usr00";
-    int cont = 0;
+    short cont = 0;
 
-    for (int i = 1; i < 6; i ++)
+    for (short i = 1; i < 6; i ++)
     {
         FILE *arquivo = fopen(usr_file, "r");
 
         if (arquivo == NULL)
-            snprintf(usr_file, sizeof(usr_file), "usr/usr%02d", i);
+            snprintf(usr_file, sizeof(usr_file), "usr/usr%02hd", i);
 
         else
         {
             cont ++;
-            printf("USUÁRIO %d: ----------------\n\n", cont);
-            for (int x = 0; x <= 2; x ++)
+            printf("USUÁRIO %hd: ================\n", cont);
+            for (short x = 0; x <= 2; x ++)
             {
                 fscanf(arquivo, "%20[^\n]", linha);
-                printf("VALOR: %s\n", linha);
+                printf("|| > %s\n", linha);
                 fgetc(arquivo);
             }
             fclose(arquivo);
-            snprintf(usr_file, sizeof(usr_file), "usr/usr%02d", i);
+            snprintf(usr_file, sizeof(usr_file), "usr/usr%02hd", i);
             printf("\n");
         }
     }
     if (cont == 0)
         printf("< SEM USUÁRIOS CADASTRADOS! >\n");
+    return cont;
 }
 
 void clr_scr()
